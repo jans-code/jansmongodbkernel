@@ -4,6 +4,9 @@
 
 A simple mongodb kernel for jupyter.
 Created using IPython's kernel and pexpect's REPLWrapper subclasses.
+This kernel still has some issues and therefore is a work in progress.
+Somehow the REPLWrapper loses track of what to post back.
+Also incomplete statements may hang the wrapper.
 
 ## Installation
 
