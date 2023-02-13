@@ -7,8 +7,11 @@ mongodbwrapper = replwrap.REPLWrapper("mongosh --quiet", "> ", None)
 def rmlines(solution):
     ret_val = ""
     solution = solution.split("\n")
-    for i in range(1,len(solution)-1):
-        ret_val = ret_val + solution[i] + "\n"
+    for i in range(1,len(solution)):
+        if i != len(solution)-1:
+            ret_val = ret_val + solution[i] + "\n"
+        else:
+            ret_val = ret_val + "\n<<You are in db: " + solution[i] + ">>"           
     return(ret_val)
 
 class jansmongodbkernel(Kernel):
