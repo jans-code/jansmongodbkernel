@@ -2,17 +2,17 @@
 from ipykernel.kernelbase import Kernel
 from pexpect import replwrap
 
-mongodbwrapper = replwrap.REPLWrapper("mongosh --quiet", "> ", None)
+mongodbwrapper = replwrap.REPLWrapper("mongosh --quiet", "> ", None, "... ")
 
-def rmlines(solution):
+def rmlines(solution,loc_printout):
     ret_val = ""
     solution = solution.split("\n")
     for i in range(1,len(solution)):
         if i != len(solution)-1:
             ret_val = ret_val + solution[i] + "\n"
-        else:
-            ret_val = ret_val + "\n<<You are in db: " + solution[i] + ">>"           
-    return(ret_val)
+        elif loc_printout:
+            ret_val = ret_val + "\n<<You are in db: " + solution[i] + ">>"
+    return ret_val
 
 class jansmongodbkernel(Kernel):
     implementation = 'IPython'
@@ -29,11 +29,16 @@ class jansmongodbkernel(Kernel):
     def do_execute(self, code, silent, store_history=True, user_expressions=None,
                    allow_stdin=False):
         if not silent:            
-            if ("quit" in code) or ("exit" in code):
+            if (code[0:4] == "quit") or (code[0:4] == "exit"):
                 solution = f'"{code}" is now allowed in the mongodb kernel'
             else:
+                code = code.replace("\n"," ")
                 solution = mongodbwrapper.run_command(code)
-                solution = rmlines(solution)
+                if "SyntaxError" in solution:
+                    mongodbwrapper._expect_prompt()
+                    solution = rmlines(solution, False)
+                else:
+                    solution = rmlines(solution, True)
             stream_content = {'name': 'stdout', 'text': solution}
             self.send_response(self.iopub_socket, 'stream', stream_content)
 
