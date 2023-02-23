@@ -8,7 +8,7 @@ This kernel still has some issues and therefore is a work in progress.
 Somehow the REPLWrapper loses track of what to post back.
 Also incomplete statements may hang the wrapper.
 
-## Installation
+## Dev Installation
 
 - install mongodb from your distro's package manager
 - `pip install` jupyterlab and pexpect
