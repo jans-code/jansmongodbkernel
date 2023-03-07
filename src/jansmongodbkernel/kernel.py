@@ -30,7 +30,7 @@ class jansmongodbkernel(Kernel):
                    allow_stdin=False):
         if not silent:            
             if (code[0:4] == "quit") or (code[0:4] == "exit"):
-                solution = f'"{code}" is now allowed in the mongodb kernel'
+                solution = f'"{code}" is not allowed in the mongodb kernel'
             else:
                 code = code.replace("\n"," ")
                 solution = mongodbwrapper.run_command(code)
